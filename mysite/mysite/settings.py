@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'log',
 ]
 
 MIDDLEWARE = [
@@ -120,4 +121,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'index'
+
+# YAYYY Email information
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

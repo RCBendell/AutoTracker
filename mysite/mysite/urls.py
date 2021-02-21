@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+# from django.conf.urls import url
+# from mysite.core import views as core_views
 
 urlpatterns = [
     # 127.0.0.1:8000/log
@@ -23,5 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # Adds account handling
     path('accounts/', include('django.contrib.auth.urls')),
-
+    # Signup/Account Creation
+    # url(r'^signup/$', core_views.signup, name='signup'),
+    # I think this goes in the other one
 ]

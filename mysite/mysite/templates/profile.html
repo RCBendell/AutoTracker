@@ -1,9 +1,9 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>Auto Tracker</h1>
-  <p>Welcome to Auto Tracker, a website created by <em>Robert C. Bendell</em>!</p>
-  <!--<h2>Hello {user.name}</h2>-->
-  <p></p>
+  <h1>Welcome {{user.first_name}} {{user.last_name}}</h1>
+  <p>Username: {{user.username}}</p>
+  <P>Email: {{user.email}}</P>
+  <a href="{% url 'createCar' %}">Add a New Car</a>
  
 {% endblock %}
