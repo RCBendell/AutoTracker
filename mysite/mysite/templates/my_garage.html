@@ -1,0 +1,19 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Welcome To Your Garage</h1>
+ 
+  {% if car_list %}
+  <ul>
+      {% for car in car_list %}
+      <li>
+          <a href="{{ car.get_absolute_url }}">{{ car.make }}, {{ car.model }}, {{ car.year }}</a>
+      </li>
+      {% endfor %}
+  </ul>
+  {% else %}
+    <p>You Have No Cars in your Garage!</p>
+    <button><a href="{% url 'createCar' %}">Would you Like to add a New Car?</a></button>
+  {% endif %}
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>{{ car.make }}, {{ car.model }}</h1>
+  <br></br>
+  <body>
+      Year: {{ car.year }}
+      <br>
+      Color: {{ car.color }}
+      <br>
+      Mileage: {{ car.mileage }}
+        <em>[Mileage has not been updated in: THIS MANY DAYS]</em>
+      <br>
+      VIN: {{ car.vin }}
+      <br>
+  </body>
+  
+  <button><a href="{{ car.get_absolute_url }}/update">Update Vehicle</a></button>
+  <button><a href="{{ car.get_absolute_url }}/delete">Delete Vehicle</a></button>
+
+{% endblock %}

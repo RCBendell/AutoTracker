@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 class car(models.Model):
@@ -14,3 +15,6 @@ class car(models.Model):
     # Optional 
     # image = models.ImageField(blank=True)
     # Need to Install Something ... 
+
+    def get_absolute_url(self):
+        return reverse('carDetail', args=[str(self.id)])

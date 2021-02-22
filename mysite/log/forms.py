@@ -15,6 +15,7 @@ class SignUpForm(UserCreationForm):
 
 
 class CarCreationForm(forms.ModelForm):
+    owner = forms.CharField(max_length=20, widget=forms.HiddenInput(), required=False)
     make = forms.CharField(max_length=30, required = True)
     model = forms.CharField(max_length=30, required = True)
     year = forms.IntegerField(min_value = 1900, required = True)
@@ -24,4 +25,4 @@ class CarCreationForm(forms.ModelForm):
 
     class Meta:
         model = car
-        fields = ('make', 'model', 'year', 'color', 'vin', 'mileage',)
+        fields = ('owner', 'make', 'model', 'year', 'color', 'vin', 'mileage',)

@@ -16,7 +16,8 @@
     {% if user.is_authenticated %}
       <a>Hello, {{ user.get_username }}</a>
       <a href="{% url 'profile' %}">My Profile</a>
-      <a>My Garage</a>
+      <a href="{% url 'myGarage' %}">My Garage</a>
+      <a >New Log Entry</a>
       
       <a href="{% url 'logout' %}?next={{request.path}}">Logout</a>
     {% else %}
