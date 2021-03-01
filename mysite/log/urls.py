@@ -9,8 +9,10 @@ urlpatterns = [
     path('', views.index, name='index'),
     # Signup/Account Creation
     url(r'^signup/$', views.signup, name='signup'),
-    # Profile View?
-    url(r'^profile/$', views.profile, name='profile'),
+    # Profile View -- OLD
+    #url(r'^profile/$', views.profile, name='profile'),
+    # Profile View with Entry List
+    path('profile/', views.profile.as_view(), name='profile'),
     # Add Car
     url(r'^createCar/$', views.createCar, name='createCar'),
     # My Garage
@@ -22,5 +24,10 @@ urlpatterns = [
     # Delete Car  .. OR a method for deleting a car in a garage
     path('car/<int:pk>/delete/', views.carDelete.as_view(), name='carDelete'),
     # New Entry .. Add a Log Entry Associated with the Car
-
+    url(r'^createEntry/$', views.createEntry, name='createEntry'),
+    # Edit Entry
+    path('entry/<int:pk>/update/', views.entryUpdate.as_view(), name='entryUpdate'),
+    # Entry Detail View
+    path('entry/<int:pk>', views.entryDetail.as_view(), name='entryDetail'),
+    
 ]

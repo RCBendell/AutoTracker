@@ -1,0 +1,14 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+    <a>{{ entry.car }}</a>
+    <br>
+    <a>{{ entry.blog }}</a>
+    <br>
+    <a>{{ entry.date_time }}</a>
+    <br>
+
+    <button><a href="{{ entry.get_absolute_url }}/update">Edit Log Entry</a></button>
+
+{% endblock %}

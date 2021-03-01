@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import car
+from .models import car, entry
 from django.forms import ModelForm
 
 class SignUpForm(UserCreationForm):
@@ -26,3 +26,25 @@ class CarCreationForm(forms.ModelForm):
     class Meta:
         model = car
         fields = ('owner', 'make', 'model', 'year', 'color', 'vin', 'mileage',)
+
+    
+
+class LogEntryForm(forms.ModelForm):
+    owner = forms.CharField(max_length=20, widget=forms.HiddenInput(), required=False)
+    # This needs to be a drop down with all available users cars
+    # car = forms.CharField()
+
+
+    blog = forms.CharField(widget=forms.Textarea)
+    cost = forms.DecimalField(decimal_places=2, required=False)
+
+    #warranty = forms.BooleanField(default=False)
+
+    class Meta:
+        model = entry
+        fields = ('owner', 'car', 'blog', 'cost',)
+
+    def __init__(self, user, *args, **kwargs):
+        super(LogEntryForm, self).__init__(*args, **kwargs)
+        self.fields['car'].queryset = car.objects.filter(owner=user.get_username())
+        
