@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import include, path
 # from django.conf.urls import url
 # from mysite.core import views as core_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     # 127.0.0.1:8000/log

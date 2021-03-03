@@ -13,8 +13,8 @@ class car(models.Model):
     vin = models.CharField(max_length=30, blank=True, unique=True)
     mileage = models.PositiveIntegerField()
     # Optional 
-    # image = models.ImageField(blank=True)
-    # Need to Install Something ... 
+    image = models.ImageField(blank=True, upload_to='uploaded_images/')
+    
 
     # DateField.auto_now_add() = True
 
@@ -29,6 +29,8 @@ class entry(models.Model):
     owner = models.CharField(max_length=20, blank=False)
     date_time = models.DateTimeField(auto_now=True)
     blog = models.TextField()
+    #update_mileage = models.PositiveIntegerField()
+    
     # Optional ... It might not have cost anything, might just be saying hey
     cost = models.DecimalField(max_digits=9, decimal_places=2, blank=True)
     # File for receipts

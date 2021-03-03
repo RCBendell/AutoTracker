@@ -66,13 +66,19 @@ class myGarage(ListView):
 class carDetail(DetailView):
    model = car
    template_name = 'car_detail.html'
-   # Pass entry to create list of entries for each car...becomes a list view?
 
+   def get_context_data(self, *args, **kwargs):
+      context = super(carDetail, self).get_context_data(*args, **kwargs)
+      number = self.request.path
+      # Path is /car/<int:pk>... Returning after 5 characters, enables only the <int:pk> to show up
+      number = number[5:]
+      context['entry_list'] = entry.objects.filter(car = number)
+      return context
 
 class carUpdate(UpdateView):
    model = car
    template_name = 'car_update.html'
-   fields = ['make','model', 'year', 'color', 'mileage', 'vin']
+   fields = ['make','model', 'year', 'color', 'mileage', 'vin', 'image']
 
 class carDelete(DeleteView):
    model = car

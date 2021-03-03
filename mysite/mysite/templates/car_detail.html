@@ -13,9 +13,33 @@
       <br>
       VIN: {{ car.vin }}
       <br>
+      {% if car.image %}
+        {{ car.image.url }}
+      {% endif %}
   </body>
   
   <button><a href="{{ car.get_absolute_url }}/update">Update Vehicle</a></button>
   <button><a href="{{ car.get_absolute_url }}/delete">Delete Vehicle</a></button>
+
+  <br>
+  <br>
+  <h2> Vehicle Log </h2>
+
+  {% if entry_list %}
+  <ul>
+      {% for entry in entry_list %}
+      <li>
+          <a>{{ entry.car }}</a><br>
+          <a>{{ entry.blog }}</a><br>
+          <a>{{ entry.date_time }}</a><br>
+          <a href="{{ entry.get_absolute_url }}/update">Edit Log Entry</a>
+          <br>
+      </li>
+      {% endfor %}
+  </ul>
+  {% else %}
+    <p>You Have No Log Entries</p>
+    <button><a href="{% url 'createEntry' %}">Create a New Log Entry?</a></button>
+  {% endif %}
 
 {% endblock %}
