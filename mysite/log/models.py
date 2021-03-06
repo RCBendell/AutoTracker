@@ -1,6 +1,8 @@
 from django.db import models
 from django.urls import reverse
 
+import uuid
+
 # Create your models here.
 class car(models.Model):
     owner = models.CharField(max_length=20)

@@ -15,6 +15,16 @@ from django.views.generic import ListView, DetailView, UpdateView, DeleteView
 from .models import car, entry
 from django.urls import reverse_lazy
 
+from log.tokens import account_activation_token
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.core.mail import send_mail
+from .tokens import account_activation_token
+
+from django.utils.http import urlsafe_base64_encode
+from django.utils.http import urlsafe_base64_decode
+from django.utils.encoding import force_text, force_bytes
+
 # Index View
 def index(request):
    context = {}
@@ -25,15 +35,49 @@ def signup(request):
    if request.method == 'POST':
       form = SignUpForm(request.POST)
       if form.is_valid():
-         form.save()
-         username = form.cleaned_data.get('username')
-         raw_password = form.cleaned_data.get('password1')
-         user = authenticate(username=username, password=raw_password)
-         login(request, user)
-         return redirect('index')
+         ser = form.save(commit = False)
+         ser.is_active = False
+
+         ser.save()
+
+         current_site = get_current_site(request)
+         subject = 'Activate your AutoTracker Account'
+         message = render_to_string('account_activation_email.html',
+         {
+            'user': ser, 
+            'domain': current_site.domain, 
+            'uid':urlsafe_base64_encode(force_bytes(ser.get_username())),
+            'token': account_activation_token.make_token(ser),
+         })
+
+         send_mail(subject, 
+                     message, 
+                     'bendell.test01@gmail.com', 
+                     [ser.email], 
+                     
+                     fail_silently = False, 
+         )
+
+         return redirect('account_activation_sent')
+
    else:
       form = SignUpForm()
    return render(request, 'signup.html', {'form': form})
+
+def account_activation_sent(request):
+    return render(request, 'account_activation_sent.html')
+
+
+def activate(request, uidb64, token):
+   uid = force_text(urlsafe_base64_decode(uidb64))
+   user = User.objects.get(username=uid)
+   #return HttpResponse(uid, content_type='text/plain')
+
+   user.is_active = True
+   user.save()
+   login(request, user)
+   return redirect('index')
+
 
 # Profile View
 class profile(ListView):
