@@ -3,6 +3,15 @@
 {% block content %}
   <h1>{{ car.make }}, {{ car.model }}</h1>
   <br></br>
+  {% if car.image %}
+        <img src="{{car.image.url}}" style="float:right; width: 600px; height: 500px;">
+        <br>
+  {% else %}
+        <img src="/media/media/uploaded_images/default.png" style="float:right; width: 600px; height: 500px;">
+        <br>
+  {% endif %}
+
+
   <body>
       Year: {{ car.year }}
       <br>
@@ -13,9 +22,8 @@
       <br>
       VIN: {{ car.vin }}
       <br>
-      {% if car.image %}
-        {{ car.image.url }}
-      {% endif %}
+      
+      <br>
   </body>
   
   <button><a href="{{ car.get_absolute_url }}/update">Update Vehicle</a></button>

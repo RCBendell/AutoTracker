@@ -20,6 +20,8 @@ from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
 
+
+
 urlpatterns = [
     # 127.0.0.1:8000/log
     path('', include('log.urls')),
@@ -30,4 +32,8 @@ urlpatterns = [
     # Signup/Account Creation
     # url(r'^signup/$', core_views.signup, name='signup'),
     # I think this goes in the other one
-]
+] 
+
+if settings.DEBUG: 
+        urlpatterns += static(settings.MEDIA_URL, 
+                              document_root=settings.MEDIA_ROOT) 

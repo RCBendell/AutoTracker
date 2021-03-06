@@ -45,8 +45,8 @@ def signup(request):
          message = render_to_string('account_activation_email.html',
          {
             'user': ser, 
-            'domain': current_site.domain, 
-            'uid':urlsafe_base64_encode(force_bytes(ser.get_username())),
+            'domain': current_site.domain,
+            'uid': urlsafe_base64_encode(force_bytes(ser.pk)),
             'token': account_activation_token.make_token(ser),
          })
 
@@ -68,15 +68,28 @@ def account_activation_sent(request):
     return render(request, 'account_activation_sent.html')
 
 
-def activate(request, uidb64, token):
-   uid = force_text(urlsafe_base64_decode(uidb64))
-   user = User.objects.get(username=uid)
-   #return HttpResponse(uid, content_type='text/plain')
+#def activate(request, uidb64, token):
+#   uid = force_text(urlsafe_base64_decode(uidb64))
+#   user = User.objects.get(pk=uid)
+#   user.is_active = True
+#   user.save()
+#   login(request, user)
+#   return redirect('index')
 
-   user.is_active = True
-   user.save()
-   login(request, user)
-   return redirect('index')
+def activate(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        login(request, user)
+        return redirect('index')
+        #return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+    else:
+        return HttpResponse('Activation link is invalid!')
 
 
 # Profile View
@@ -90,7 +103,7 @@ class profile(ListView):
 # Create A New Car
 def createCar(request):
    if request.method == 'POST':
-      form = CarCreationForm(request.POST)
+      form = CarCreationForm(request.POST, request.FILES)
       if form.is_valid():
          obj = form.save(commit=False)
          obj.owner = request.user.get_username()

@@ -1,28 +1,25 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>Welcome {{user.first_name}} {{user.last_name}}</h1>
+  <h1>Welcome {{user.first_name}} {{user.last_name}}!</h1>
   <p>Username: {{user.username}}</p>
   <P>Email: {{user.email}}</P>
   <button><a href="{% url 'createCar' %}">Add a New Car </a></button>
 
   <button><a href="{% url 'myGarage' %}">My Garage</a></button>
-  
-  <h2>Log Entries</h2>
-
+  <br>
+  <br>
+  <h2>All Your Log Entries</h2>
+  <hr>
   {% if entry_list %}
   <ul>
       {% for entry in entry_list %}
       <li>
-          <!--<a href="{{ car.get_absolute_url }}">{{ car.make }}, {{ car.model }}, {{ car.year }}</a>
-          --> 
-          
           <a>{{ entry.car }}</a><br>
           <a>{{ entry.blog }}</a><br>
           <a>{{ entry.date_time }}</a><br>
           <a href="{{ entry.get_absolute_url }}/update">Edit Log Entry</a>
-          <br>
-          
+          <hr style="width: 50%">          
       </li>
       {% endfor %}
   </ul>

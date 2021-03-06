@@ -15,7 +15,7 @@ class car(models.Model):
     vin = models.CharField(max_length=30, blank=True, unique=True)
     mileage = models.PositiveIntegerField()
     # Optional 
-    image = models.ImageField(blank=True, upload_to='uploaded_images/')
+    image = models.ImageField(blank=True, upload_to='media/uploaded_images/')
     
 
     # DateField.auto_now_add() = True

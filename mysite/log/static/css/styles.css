@@ -1,7 +1,9 @@
 body {
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
-    background-color: rgb(168, 168, 167);
+    background-image: url("/static/images/roughcloth.png");
+    background-repeat: 2;    
+
     color: black;
   }
   
@@ -29,4 +31,7 @@ body {
     color: white;
   }
 
-  
+  img {
+    border: 5px solid #555;
+    border-radius: 5%;
+  }
