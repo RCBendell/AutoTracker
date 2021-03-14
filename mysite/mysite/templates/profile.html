@@ -10,13 +10,14 @@
   <br>
   <br>
   <h2>All Your Log Entries</h2>
+  
   <hr>
-
-  <form action="{% url 'searchResults' %}" method="get">
+  <form action="{% url 'searchResults' %}" method="get" style="float:right;">
     <input name="query" type="text" placeholder="Search Entries Here.." >
     <button type="submit" name="button">Submit</button>
   </form>
-  <hr>
+  
+  
 
   {% if entry_list %}
   <ul>
