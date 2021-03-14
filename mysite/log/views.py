@@ -98,7 +98,7 @@ class profile(ListView):
    template_name = 'profile.html'
 
    def get_queryset(self):
-      return entry.objects.filter(owner = self.request.user.get_username()).order_by('-date_time')
+      return entry.objects.filter(owner = self.request.user.get_username()).order_by('-date')
 
 # Create A New Car
 def createCar(request):
@@ -135,7 +135,7 @@ class carDetail(DetailView):
 class carUpdate(UpdateView):
    model = car
    template_name = 'car_update.html'
-   fields = ['make','model', 'year', 'color', 'mileage', 'vin', 'image']
+   fields = ['make','model', 'year', 'color', 'mileage', 'vin', 'image', 'is_inspected', 'inspected_exp', 'is_registered', 'registered_exp', 'is_insured', 'insured_exp']
 
 class carDelete(DeleteView):
    model = car
@@ -162,9 +162,36 @@ class entryList(ListView):
 class entryUpdate(UpdateView):
    model = entry
    template_name = 'entry_update.html'
-   fields = ['car', 'blog', 'cost']
+   fields = ['car', 'blog', 'cost', 'date']
    sucess_url = reverse_lazy('profile')
 
 class entryDetail(DetailView):
    model = entry
    template_name = 'entry_detail.html'
+
+# Used in Profile View
+def searchResults(request):
+   sch = request.GET['query']
+   # Searches search keyword
+   entry_list = entry.objects.filter(blog__icontains=sch)
+   # Makes sure owner is correct, orders
+   entry_list = entry_list.filter(owner = request.user.get_username()).order_by('-date')
+   context = {'entry_list':entry_list, 'search':sch}
+
+   return render(request, 'search_results.html', context)
+
+#def carSearchResults(request):
+ #  sch = request.GET['query']
+   # Searches search keyword
+  # entry_list = entry.objects.filter(blog__icontains=sch)
+   # Makes sure owner is correct, orders
+   #entry_list = entry_list.filter(owner = request.user.get_username()).order_by('-date')
+
+   #number = request.path
+   # Path is /carsearch/<int:pk>... Returning after 5 characters, enables only the <int:pk> to show up
+   #number = number[11:]
+   #entry_list = entry_list.filter(car = number)
+
+   #context = {'entry_list':entry_list, 'search':sch}
+
+   #return render(request, 'search_results.html', context)

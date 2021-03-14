@@ -37,6 +37,10 @@ urlpatterns = [
     path('account_activation_sent/', views.account_activation_sent, name='account_activation_sent'),
     #url(r'^activate/(?P<uidb64>.+)/(?P<token>.+)/$', views.activate, name='activate'),
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$', views.activate, name='activate'),
+
+    path('search/', views.searchResults, name='searchResults'),
+
+    #path('carsearch/<int:pk>', views.carSearchResults, name='carSearchResults'),
     
 ]
 if settings.DEBUG: 

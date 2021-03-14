@@ -1,24 +1,14 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>Welcome {{user.first_name}} {{user.last_name}}!</h1>
-  <p>Username: {{user.username}}</p>
-  <P>Email: {{user.email}}</P>
-  <button><a href="{% url 'createCar' %}">Add a New Car </a></button>
 
-  <button><a href="{% url 'myGarage' %}">My Garage</a></button>
-  <br>
-  <br>
-  <h2>All Your Log Entries</h2>
-  <hr>
+<h1 style="text-align:center">Search Results:</h1>
+<h4 style="text-align:center">Search Term "{{search}}"</h4>
+<hr>
 
-  <form action="{% url 'searchResults' %}" method="get">
-    <input name="query" type="text" placeholder="Search Entries Here.." >
-    <button type="submit" name="button">Submit</button>
-  </form>
-  <hr>
+<br>
 
-  {% if entry_list %}
+{% if entry_list %}
   <ul>
       {% for entry in entry_list %}
       <li>
@@ -35,5 +25,4 @@
     <button><a href="{% url 'createEntry' %}">Create a New Log Entry?</a></button>
   {% endif %}
 
- 
 {% endblock %}

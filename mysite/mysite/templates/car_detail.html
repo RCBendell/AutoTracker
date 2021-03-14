@@ -22,8 +22,38 @@
       <br>
       VIN: {{ car.vin }}
       <br>
-      
       <br>
+
+
+      <!--Inspected: {{ car.is_inspected|yesno }}  Expiration Date: {{ car.inspected_exp }}-->
+      <table>
+        <tr>
+          <th style="width:200px">Inspected:</th>
+          <th style="width:200px">Registered:</th>
+          <th style="width:200px">Insured:</th>
+        </tr>
+        <tr>
+          <td>{{ car.is_inspected|yesno }}</td>
+          <td>{{ car.is_registered|yesno }}</td>
+          <td>{{ car.is_insured|yesno }}</td>
+        </tr>
+        <tr>
+          <th colspan="3">Expiration Dates:</th>
+        </tr>
+        <tr>
+          <td>{{ car.inspected_exp }}</td>
+          <td>{{ car.registered_exp }}</td>
+          <td>{{ car.insured_exp }}</td>
+        </tr>
+      </table>
+
+
+
+
+
+      <br>
+      <br>
+      
   </body>
   
   <button><a href="{{ car.get_absolute_url }}/update">Update Vehicle</a></button>
@@ -32,6 +62,7 @@
   <br>
   <br>
   <h2> Vehicle Log </h2>
+  
 
   {% if entry_list %}
   <ul>
@@ -39,7 +70,7 @@
       <li>
           <a>{{ entry.car }}</a><br>
           <a>{{ entry.blog }}</a><br>
-          <a>{{ entry.date_time }}</a><br>
+          <a>{{ entry.date }}</a><br>
           <a href="{{ entry.get_absolute_url }}/update">Edit Log Entry</a>
           <br>
       </li>

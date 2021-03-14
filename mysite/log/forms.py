@@ -23,9 +23,20 @@ class CarCreationForm(forms.ModelForm):
     mileage = forms.IntegerField(min_value=1, required = True)
     vin = forms.CharField(max_length = 30, required = False)
 
+    is_inspected = forms.BooleanField()
+    inspected_exp = forms.DateField(required=False, help_text="For All Dates: use 'YYYY/MM/DD' Format")
+
+    is_registered = forms.BooleanField()
+    registered_exp = forms.DateField(required=False)
+
+    is_insured = forms.BooleanField()
+    insured_exp = forms.DateField(required=False)
+
+    #Enable Reminders? Bool Field...
+
     class Meta:
         model = car
-        fields = ('owner', 'make', 'model', 'year', 'color', 'vin', 'mileage',)
+        fields = ('owner', 'make', 'model', 'year', 'color', 'vin', 'mileage', 'is_inspected', 'inspected_exp', 'is_registered', 'registered_exp', 'is_insured', 'insured_exp')
 
     
 
@@ -38,11 +49,13 @@ class LogEntryForm(forms.ModelForm):
     blog = forms.CharField(widget=forms.Textarea)
     cost = forms.DecimalField(decimal_places=2, required=False)
 
+    date = forms.DateField()
+
     #warranty = forms.BooleanField(default=False)
 
     class Meta:
         model = entry
-        fields = ('owner', 'car', 'blog', 'cost',)
+        fields = ('owner', 'car', 'blog', 'cost','date')
 
     def __init__(self, user, *args, **kwargs):
         super(LogEntryForm, self).__init__(*args, **kwargs)

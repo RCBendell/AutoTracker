@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 
 import uuid
+from datetime import date
 
 # Create your models here.
 class car(models.Model):
@@ -17,6 +18,14 @@ class car(models.Model):
     # Optional 
     image = models.ImageField(blank=True, upload_to='media/uploaded_images/')
     
+    is_inspected = models.BooleanField(null=True)
+    inspected_exp = models.DateField(blank=True, null=True)
+
+    is_registered = models.BooleanField(null=True)
+    registered_exp = models.DateField(blank=True, null=True)
+
+    is_insured = models.BooleanField(null=True)
+    insured_exp = models.DateField(blank=True, null=True)
 
     # DateField.auto_now_add() = True
 
@@ -29,7 +38,8 @@ class car(models.Model):
 class entry(models.Model):
     car = models.ForeignKey(car, on_delete=models.CASCADE)
     owner = models.CharField(max_length=20, blank=False)
-    date_time = models.DateTimeField(auto_now=True)
+    modified_date_time = models.DateTimeField(auto_now=True)
+    date = models.DateField(default=date.today)
     blog = models.TextField()
     #update_mileage = models.PositiveIntegerField()
     

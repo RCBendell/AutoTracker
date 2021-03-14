@@ -10,5 +10,5 @@ class carAdmin(admin.ModelAdmin):
 admin.site.register(car, carAdmin)
 
 class entryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'date_time', 'owner', 'car', 'cost')
+    list_display = ('id', 'date', 'modified_date_time', 'owner', 'car', 'cost')
 admin.site.register(entry, entryAdmin)
