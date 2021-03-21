@@ -19,6 +19,7 @@ from django.urls import include, path
 # from mysite.core import views as core_views
 from django.conf import settings
 from django.conf.urls.static import static
+from log import views
 
 
 
@@ -32,6 +33,10 @@ urlpatterns = [
     # Signup/Account Creation
     # url(r'^signup/$', core_views.signup, name='signup'),
     # I think this goes in the other one
+
+    # For rendering a chart 
+    path('expenditurepercar-chart/<int:pk>/', views.expenditurepercar_chart, name='expenditurepercar-chart'),
+    path('expenditure-chart/', views.expenditure_chart, name='expenditure-chart'),
 ] 
 
 if settings.DEBUG: 

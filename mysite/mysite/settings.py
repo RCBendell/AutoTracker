@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'log',
     'crispy_forms',
+    #'workers',
+    'rest_framework',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -147,3 +149,4 @@ EMAIL_HOST_PASSWORD = 'qlvghosqgonupobl'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
+CELERY_BROKER_URL = 'amqp://localhost'

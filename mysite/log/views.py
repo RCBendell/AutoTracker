@@ -25,10 +25,124 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_text, force_bytes
 
+from .tasks import say_hello
+import datetime
+
+from django.db.models import Sum
+
+
+
+
 # Index View
 def index(request):
    context = {}
    return render(request, 'index.html', context = context)
+
+from django.views.generic import View
+from rest_framework.views import APIView 
+from rest_framework.response import Response 
+
+from django.http import JsonResponse
+
+
+def expenditurepercar_chart(request, pk):
+
+   qs = entry.objects.filter(owner=request.user.get_username())
+   qs = qs.filter(car = pk)
+   
+   today = datetime.date.today()
+   start = datetime.date.today()
+   start = start.replace(year=datetime.date.today().year-1)
+   start = start.replace(month=datetime.date.today().month+1)
+
+   qs = qs.filter(date__range=[start, today])
+   beginMonth = start.month
+   # begin at start.month and increment 12 times
+   labels = []
+   data = []  
+
+   for i in range (1,13):
+      labels.append(beginMonth)
+      if beginMonth <12:
+         beginMonth +=1
+      else: 
+         beginMonth = 1
+
+   for i in range (1,13):
+      data.append(0.00)
+
+   for x in qs:
+      y = labels.index(x.date.month)
+      value = data[y]+float(x.cost)
+      data.pop(y)
+      data.insert(y, value)
+
+   labels.clear()
+   beginMonth = start.month
+   for i in range(1,13):
+      datetime_object = datetime.datetime.strptime(str(beginMonth), "%m")
+      month_name = datetime_object.strftime("%B")
+
+      labels.append(month_name)
+      if beginMonth <12:
+         beginMonth +=1
+      else: 
+         beginMonth = 1
+
+   return JsonResponse(data={
+      'labels': labels, 
+      'data': data,
+   })
+
+
+def expenditure_chart(request):
+
+   qs = entry.objects.filter(owner=request.user.get_username())
+   
+   today = datetime.date.today()
+   start = datetime.date.today()
+   start = start.replace(year=datetime.date.today().year-1)
+   start = start.replace(month=datetime.date.today().month+1)
+
+   qs = qs.filter(date__range=[start, today])
+   beginMonth = start.month
+   # begin at start.month and increment 12 times
+   labels = []
+   data = []  
+
+   for i in range (1,13):
+      labels.append(beginMonth)
+      if beginMonth <12:
+         beginMonth +=1
+      else: 
+         beginMonth = 1
+
+   for i in range (1,13):
+      data.append(0.00)
+
+   for x in qs:
+      y = labels.index(x.date.month)
+      value = data[y]+float(x.cost)
+      data.pop(y)
+      data.insert(y, value)
+
+   labels.clear()
+   beginMonth = start.month
+   for i in range(1,13):
+      datetime_object = datetime.datetime.strptime(str(beginMonth), "%m")
+      month_name = datetime_object.strftime("%B")
+
+      labels.append(month_name)
+      if beginMonth <12:
+         beginMonth +=1
+      else: 
+         beginMonth = 1
+
+   return JsonResponse(data={
+      'labels': labels, 
+      'data': data,
+   })
+
 
 # View for using sign up form
 def signup(request):
@@ -129,7 +243,8 @@ class carDetail(DetailView):
       number = self.request.path
       # Path is /car/<int:pk>... Returning after 5 characters, enables only the <int:pk> to show up
       number = number[5:]
-      context['entry_list'] = entry.objects.filter(car = number)
+      context['entry_list'] = entry.objects.filter(car = number).order_by('-date')
+      context['total'] = entry.objects.filter(car=number).aggregate(Sum('cost')).get('cost__sum', 0.00)
       return context
 
 class carUpdate(UpdateView):
@@ -149,6 +264,12 @@ def createEntry(request):
       if form.is_valid():
          obj = form.save(commit=False)
          obj.owner = request.user.get_username()
+
+         #test = datetime.datetime.utcnow()
+         #test = test + datetime.timedelta(minutes=3)
+         say_hello.apply_async(countdown=60)
+
+
          form.save()
          return redirect('profile')
    else:
@@ -195,3 +316,5 @@ def searchResults(request):
    #context = {'entry_list':entry_list, 'search':sch}
 
    #return render(request, 'search_results.html', context)
+
+
