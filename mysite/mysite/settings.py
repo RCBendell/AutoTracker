@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     #'workers',
     'rest_framework',
+    #'bootstrap_datepicker_plus',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

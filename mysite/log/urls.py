@@ -41,6 +41,9 @@ urlpatterns = [
     path('search/', views.searchResults, name='searchResults'),
 
     #path('carsearch/<int:pk>', views.carSearchResults, name='carSearchResults'),
+
+    # Create Reminder
+    url(r'^createReminder/$', views.createReminder, name='createReminder'),
     
 ]
 if settings.DEBUG: 

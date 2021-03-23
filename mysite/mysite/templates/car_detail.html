@@ -23,8 +23,6 @@
       <br>
       <br>
 
-
-      <!--Inspected: {{ car.is_inspected|yesno }}  Expiration Date: {{ car.inspected_exp }}-->
       <table>
         <tr>
           <th style="width:200px">Inspected:</th>
@@ -46,15 +44,9 @@
         </tr>
       </table>
 
-
-
-
-
       <br>
       <br>
       
-  
-  
   <button><a href="{{ car.get_absolute_url }}/update">Update Vehicle</a></button>
   <button><a href="{{ car.get_absolute_url }}/delete">Delete Vehicle</a></button>
   <br>
@@ -85,13 +77,6 @@
     <p>You Have No Log Entries</p>
     <button><a href="{% url 'createEntry' %}">Create a New Log Entry?</a></button>
   {% endif %}
-
-
-<!--
-    <h1>implementation of <b>chartJS</b> using <b>django</b></h1> 
-    
-    <hr /> 
--->
   
 
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -124,7 +109,7 @@
               },
               title: {
                 display: true,
-                text: 'Spending in the last Year'
+                text: 'Spending in the Last Year'
               }
             }
           });

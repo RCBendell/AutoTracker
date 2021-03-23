@@ -1,8 +1,10 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import car, entry
+from .models import car, entry, reminder
 from django.forms import ModelForm
+#from .widgets import FengyuanChenDatePickerInput
+from bootstrap_datepicker_plus import DatePickerInput
 
 class SignUpForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
@@ -60,4 +62,26 @@ class LogEntryForm(forms.ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(LogEntryForm, self).__init__(*args, **kwargs)
         self.fields['car'].queryset = car.objects.filter(owner=user.get_username())
-        
+
+
+class reminderForm(forms.ModelForm):
+    owner = forms.CharField(max_length=20, widget=forms.HiddenInput(), required=False)
+    email = forms.EmailField(widget=forms.HiddenInput(), required=False)
+    msg = forms.CharField(widget=forms.Textarea)
+    #remind_on_date = forms.DateField(
+    #        widget=DatePickerInput(
+    #            options={
+    #                "format": "mm/dd/yyyy",
+    #                "autoclose": True
+    #            }
+    #        )
+    #    )
+    remind_on_date = forms.DateField()
+
+    class Meta:
+        model = reminder
+        fields = ('owner', 'email', 'car', 'msg', 'remind_on_date')
+
+    def __init__(self, user, *args, **kwargs):
+        super(reminderForm, self).__init__(*args, **kwargs)
+        self.fields['car'].queryset = car.objects.filter(owner=user.get_username())

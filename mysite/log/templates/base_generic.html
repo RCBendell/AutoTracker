@@ -21,6 +21,7 @@
       <a href="{% url 'profile' %}">My Profile</a>
       <a href="{% url 'myGarage' %}">My Garage</a>
       <a href="{% url 'createEntry' %}">New Log Entry</a>
+      <a href="{% url 'createReminder' %}">New Reminder</a>
       
       <a href="{% url 'logout' %}?next={% url 'index' %}">Logout</a>
     {% else %}

@@ -7,12 +7,12 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 
 # For SignUpView
-from log.forms import SignUpForm, CarCreationForm, LogEntryForm
+from log.forms import SignUpForm, CarCreationForm, LogEntryForm, reminderForm
 
 from django.contrib.auth.models import User
 
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView
-from .models import car, entry
+from .models import car, entry, reminder
 from django.urls import reverse_lazy
 
 from log.tokens import account_activation_token
@@ -25,7 +25,7 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_text, force_bytes
 
-from .tasks import say_hello
+from .tasks import say_hello, add
 import datetime
 
 from django.db.models import Sum
@@ -44,7 +44,8 @@ from rest_framework.response import Response
 
 from django.http import JsonResponse
 
-
+# Returns cost data for the last year of an individual vehicle
+# Used on Car Detail Chart
 def expenditurepercar_chart(request, pk):
 
    qs = entry.objects.filter(owner=request.user.get_username())
@@ -94,7 +95,8 @@ def expenditurepercar_chart(request, pk):
       'data': data,
    })
 
-
+# Returns cost data of the last yeat for an individual user
+# Used on Profile page chart
 def expenditure_chart(request):
 
    qs = entry.objects.filter(owner=request.user.get_username())
@@ -265,10 +267,8 @@ def createEntry(request):
          obj = form.save(commit=False)
          obj.owner = request.user.get_username()
 
-         #test = datetime.datetime.utcnow()
-         #test = test + datetime.timedelta(minutes=3)
-         say_hello.apply_async(countdown=60)
-
+         sum = add(1,2)
+         print(sum)
 
          form.save()
          return redirect('profile')
@@ -317,4 +317,17 @@ def searchResults(request):
 
    #return render(request, 'search_results.html', context)
 
+# Create Reminder
+def createReminder(request):
+   if request.method == 'POST':
+      form = reminderForm(request.user, request.POST)
+      if form.is_valid():
+         oby = form.save(commit=False)
+         oby.owner = request.user.get_username()
+         oby.email = request.user.email
 
+         form.save()
+         return redirect('profile')
+   else:
+      form = reminderForm(request.user)
+   return render(request, 'reminder_creation.html', {'form': form})

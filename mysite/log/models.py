@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-
+import datetime
 import uuid
 from datetime import date
 
@@ -44,7 +44,7 @@ class entry(models.Model):
     #update_mileage = models.PositiveIntegerField()
     
     # Optional ... It might not have cost anything, might just be saying hey
-    cost = models.DecimalField(max_digits=9, decimal_places=2, blank=True)
+    cost = models.DecimalField(max_digits=9, decimal_places=2, blank=True, default=0.00)
     # File for receipts
     
     # If you have a warranty, make it true, else it will be assumed there is no warranty for the entry
@@ -53,3 +53,18 @@ class entry(models.Model):
 
     def get_absolute_url(self):
         return reverse('entryDetail', args=[str(self.id)])
+
+class reminder(models.Model):
+    # type, date, or mileage triggered. 
+    # Build date first
+    remind_on_date = models.DateField(blank=False)
+    # Whos is it, for searching purposes
+    owner = models.CharField(max_length=20, blank=False)
+    # Recipient(owner's email)
+    email = models.EmailField(blank=False)
+    # Car id for which car it belongs too
+    car = models.ForeignKey(car, on_delete=models.CASCADE)
+    # What the reminder is about
+    msg = models.TextField()
+
+
