@@ -33,9 +33,7 @@
 <body>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-sm-2">
-      bleh
-      </div>
+      <div class="col-sm-2">{% block sidecar %}{% endblock %}</div>
       <div class="col-sm-10 ">{% block content %}{% endblock %}</div>
     </div>
   </div>

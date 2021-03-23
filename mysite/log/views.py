@@ -216,6 +216,11 @@ class profile(ListView):
    def get_queryset(self):
       return entry.objects.filter(owner = self.request.user.get_username()).order_by('-date')
 
+   def get_context_data(self, *args, **kwargs):
+      context = super(profile, self).get_context_data(*args, **kwargs)
+      context['reminder_list'] = reminder.objects.filter(owner = self.request.user.get_username())#.order_by('-date')
+      return context
+
 # Create A New Car
 def createCar(request):
    if request.method == 'POST':

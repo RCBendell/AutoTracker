@@ -94,3 +94,23 @@
  
 {% endblock %}
 
+{% block sidecar %}
+
+  {% if user.is_authenticated %}
+    <h5><u>Your Reminders: </u></h5>
+    <br>
+    {% if reminder_list %}
+    <ul>
+      {% for reminder in reminder_list %}
+      <li>
+        <a>{{ reminder.car }}</a><br>
+        <a>{{ reminder.msg }}</a><br>
+        <a>Remind on: <br>{{ reminder.remind_on_date }}</a><br>
+        <hr>
+      </li>  
+      {% endfor %}
+    </ul> 
+    {% endif %}
+  {% endif %}
+
+{% endblock %}
