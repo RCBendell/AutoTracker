@@ -336,3 +336,17 @@ def createReminder(request):
    else:
       form = reminderForm(request.user)
    return render(request, 'reminder_creation.html', {'form': form})
+
+class reminderDetail(DetailView):
+   model = reminder
+   template_name = 'reminder_detail.html'
+
+class reminderUpdate(UpdateView):
+   model = reminder
+   template_name = 'reminder_update.html'
+   fields = ['msg', 'remind_on_date']
+
+class reminderDelete(DeleteView):
+   model = reminder
+   template_name = 'reminder_delete.html'
+   success_url = reverse_lazy('profile')

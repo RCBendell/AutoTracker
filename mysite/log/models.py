@@ -67,4 +67,7 @@ class reminder(models.Model):
     # What the reminder is about
     msg = models.TextField()
 
+    def get_absolute_url(self):
+        return reverse('reminderDetail', args=[str(self.id)])
+
 

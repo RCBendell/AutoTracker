@@ -44,7 +44,12 @@ urlpatterns = [
 
     # Create Reminder
     url(r'^createReminder/$', views.createReminder, name='createReminder'),
-    
+    # Reminder Detail
+    path('reminder/<int:pk>', views.reminderDetail.as_view(), name='reminderDetail'),
+    # Reminder Update
+    path('reminder/<int:pk>/update/', views.reminderUpdate.as_view(), name='reminderUpdate'),
+    # Reminder Delete
+    path('reminder/<int:pk>/delete/', views.reminderDelete.as_view(), name='reminderDelete'),
 ]
 if settings.DEBUG: 
         urlpatterns += static(settings.MEDIA_URL, 

@@ -103,7 +103,7 @@
     <ul>
       {% for reminder in reminder_list %}
       <li>
-        <a>{{ reminder.car }}</a><br>
+        <a href="{{ reminder.get_absolute_url }}">{{ reminder.car }}</a><br>
         <a>{{ reminder.msg }}</a><br>
         <a>Remind on: <br>{{ reminder.remind_on_date }}</a><br>
         <hr>
