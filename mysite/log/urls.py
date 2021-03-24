@@ -33,15 +33,14 @@ urlpatterns = [
     path('entry/<int:pk>/update/', views.entryUpdate.as_view(), name='entryUpdate'),
     # Entry Detail View
     path('entry/<int:pk>', views.entryDetail.as_view(), name='entryDetail'),
-
+    # Redirect to simple html: Activation sent
     path('account_activation_sent/', views.account_activation_sent, name='account_activation_sent'),
     #url(r'^activate/(?P<uidb64>.+)/(?P<token>.+)/$', views.activate, name='activate'),
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$', views.activate, name='activate'),
-
+    # Display search Results from Profile Page
     path('search/', views.searchResults, name='searchResults'),
-
+    # Display search Results from Car Detail Page
     #path('carsearch/<int:pk>', views.carSearchResults, name='carSearchResults'),
-
     # Create Reminder
     url(r'^createReminder/$', views.createReminder, name='createReminder'),
     # Reminder Detail

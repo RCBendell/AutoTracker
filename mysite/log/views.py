@@ -25,7 +25,7 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_text, force_bytes
 
-from .tasks import say_hello, add
+from .tasks import say_hello, add, send_reminder_email, check_reminders
 import datetime
 
 from django.db.models import Sum
@@ -36,6 +36,7 @@ from django.db.models import Sum
 # Index View
 def index(request):
    context = {}
+   check_reminders()
    return render(request, 'index.html', context = context)
 
 from django.views.generic import View
@@ -239,6 +240,7 @@ class myGarage(ListView):
    template_name = 'my_garage.html'
    
    def get_queryset(self):
+      #send_reminder_email()
       return car.objects.filter(owner = self.request.user.get_username())
 
 class carDetail(DetailView):

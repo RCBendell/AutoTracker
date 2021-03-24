@@ -3,7 +3,6 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import car, entry, reminder
 from django.forms import ModelForm
-#from .widgets import FengyuanChenDatePickerInput
 from bootstrap_datepicker_plus import DatePickerInput
 
 class SignUpForm(UserCreationForm):
@@ -26,7 +25,7 @@ class CarCreationForm(forms.ModelForm):
     vin = forms.CharField(max_length = 30, required = False)
 
     is_inspected = forms.BooleanField()
-    inspected_exp = forms.DateField(required=False, help_text="For All Dates: use 'YYYY/MM/DD' Format")
+    inspected_exp = forms.DateField(required=False, help_text="For All Dates: use 'YYYY-MM-DD' Format")
 
     is_registered = forms.BooleanField()
     registered_exp = forms.DateField(required=False)
@@ -51,7 +50,7 @@ class LogEntryForm(forms.ModelForm):
     blog = forms.CharField(widget=forms.Textarea)
     cost = forms.DecimalField(decimal_places=2, required=False)
 
-    date = forms.DateField()
+    date = forms.DateField(help_text="For All Dates: use 'YYYY-MM-DD' Format")
 
     #warranty = forms.BooleanField(default=False)
 
@@ -76,7 +75,7 @@ class reminderForm(forms.ModelForm):
     #            }
     #        )
     #    )
-    remind_on_date = forms.DateField()
+    remind_on_date = forms.DateField(help_text="For All Dates: use 'YYYY-MM-DD' Format")
 
     class Meta:
         model = reminder
