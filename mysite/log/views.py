@@ -25,10 +25,10 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_text, force_bytes
 
-from .tasks import say_hello, add, send_reminder_email, check_reminders
+from .tasks import say_hello, add, send_reminder_email, check_reminders, update_mileage
 import datetime
 
-from django.db.models import Sum
+from django.db.models import Sum, Min, Max
 
 
 
@@ -36,7 +36,7 @@ from django.db.models import Sum
 # Index View
 def index(request):
    context = {}
-   check_reminders()
+   check_reminders.delay()
    return render(request, 'index.html', context = context)
 
 from django.views.generic import View
@@ -61,7 +61,8 @@ def expenditurepercar_chart(request, pk):
    beginMonth = start.month
    # begin at start.month and increment 12 times
    labels = []
-   data = []  
+   cost_data = [] 
+   mileage_data = [] 
 
    for i in range (1,13):
       labels.append(beginMonth)
@@ -71,13 +72,52 @@ def expenditurepercar_chart(request, pk):
          beginMonth = 1
 
    for i in range (1,13):
-      data.append(0.00)
+      cost_data.append(0.00)
+      mileage_data.append(0)
 
    for x in qs:
       y = labels.index(x.date.month)
-      value = data[y]+float(x.cost)
-      data.pop(y)
-      data.insert(y, value)
+      value = cost_data[y]+float(x.cost)
+      cost_data.pop(y)
+      cost_data.insert(y, value)
+
+   # Labels are still by month
+   # need to calculate changes in mileage
+   # have qs
+   # need to break down entries by month, find the latest one with highest mileage,
+   # Subtract that from the Previous Months
+   min_mileage = qs.aggregate(Min('update_mileage')).get('update_mileage__min', 0)
+
+   # Go by month
+   for i in range (1,13):
+      # i is the index 
+      y = labels[i-1]
+      # now y is the month 
+      # New QuerySet by month
+      qs_month = qs.filter(date__month = y)
+
+      if min_mileage == 0:
+         min_mileage = qs_month.aggregate(Min('update_mileage')).get('update_mileage__min', 0)
+
+      if qs_month:
+         max_mileage = qs_month.aggregate(Max('update_mileage')).get('update_mileage__max', 0)
+         #min_mileage = qs_month.aggregate(Min('update_mileage')).get('update_mileage__min', 0)
+      else:
+         max_mileage = 0
+         min_mileage = 0
+
+      if max_mileage == None or min_mileage == None:
+         max_mileage = 0
+         min_mileage = 0
+      
+      difference = max_mileage - min_mileage
+      
+      mileage_data.pop(i-1)
+      mileage_data.insert(i-1, difference)
+
+      min_mileage = max_mileage
+      max_mileage = min_mileage + 1
+
 
    labels.clear()
    beginMonth = start.month
@@ -93,7 +133,8 @@ def expenditurepercar_chart(request, pk):
 
    return JsonResponse(data={
       'labels': labels, 
-      'data': data,
+      'data': cost_data,
+      'mdata': mileage_data,
    })
 
 # Returns cost data of the last yeat for an individual user
@@ -274,7 +315,7 @@ def createEntry(request):
          obj = form.save(commit=False)
          obj.owner = request.user.get_username()
 
-         #update_mileage(obj)
+         update_mileage(obj)
 
          form.save()
          return redirect('profile')

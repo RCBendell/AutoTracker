@@ -52,13 +52,13 @@ class LogEntryForm(forms.ModelForm):
 
     date = forms.DateField(help_text="For All Dates: use 'YYYY-MM-DD' Format")
 
-    #update_mileage = forms.PositiveIntegerField(required = True)
+    update_mileage = forms.IntegerField(required = True)
 
     #warranty = forms.BooleanField(default=False)
 
     class Meta:
         model = entry
-        fields = ('owner', 'car', 'blog', 'cost','date')
+        fields = ('owner', 'car', 'blog', 'cost','date', 'update_mileage')
 
     def __init__(self, user, *args, **kwargs):
         super(LogEntryForm, self).__init__(*args, **kwargs)

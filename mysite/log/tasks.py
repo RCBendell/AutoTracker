@@ -1,6 +1,6 @@
 from celery import shared_task, app
 from django.utils.timezone import now
-from .models import reminder
+from .models import reminder, car
 
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
@@ -53,4 +53,9 @@ def check_reminders():
                 print('This One')
                 send_reminder_email(x)
     
-
+@shared_task()
+def update_mileage(obj):
+    if obj.car.mileage < obj.update_mileage:
+        obj.car.mileage = obj.update_mileage
+    obj.car.save()
+    
