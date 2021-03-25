@@ -52,6 +52,8 @@ class LogEntryForm(forms.ModelForm):
 
     date = forms.DateField(help_text="For All Dates: use 'YYYY-MM-DD' Format")
 
+    #update_mileage = forms.PositiveIntegerField(required = True)
+
     #warranty = forms.BooleanField(default=False)
 
     class Meta:

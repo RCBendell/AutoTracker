@@ -41,7 +41,7 @@ class entry(models.Model):
     modified_date_time = models.DateTimeField(auto_now=True)
     date = models.DateField(default=date.today)
     blog = models.TextField()
-    #update_mileage = models.PositiveIntegerField()
+    update_mileage = models.PositiveIntegerField(null=True)
     
     # Optional ... It might not have cost anything, might just be saying hey
     cost = models.DecimalField(max_digits=9, decimal_places=2, blank=True, default=0.00)

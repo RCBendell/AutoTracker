@@ -259,7 +259,7 @@ class carDetail(DetailView):
 class carUpdate(UpdateView):
    model = car
    template_name = 'car_update.html'
-   fields = ['make','model', 'year', 'color', 'mileage', 'vin', 'image', 'is_inspected', 'inspected_exp', 'is_registered', 'registered_exp', 'is_insured', 'insured_exp']
+   fields = ['make','model', 'year', 'color', 'vin', 'image', 'is_inspected', 'inspected_exp', 'is_registered', 'registered_exp', 'is_insured', 'insured_exp']
 
 class carDelete(DeleteView):
    model = car
@@ -274,8 +274,7 @@ def createEntry(request):
          obj = form.save(commit=False)
          obj.owner = request.user.get_username()
 
-         sum = add(1,2)
-         print(sum)
+         #update_mileage(obj)
 
          form.save()
          return redirect('profile')

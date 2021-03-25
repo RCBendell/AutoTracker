@@ -27,7 +27,7 @@ def send_reminder_email(r):
                 fail_silently = False, 
     )
 
-    print('Email Maybe Sent!')
+    print('Email Sent!')
 
 # I need a task that runs on startup, perhaps called from profile view
 

@@ -17,7 +17,6 @@
       Color: {{ car.color }}
       <br>
       Mileage: {{ car.mileage }}
-        <em>[Mileage has not been updated in: THIS MANY DAYS]</em>
       <br>
       VIN: {{ car.vin }}
       <br>
@@ -99,7 +98,16 @@
               datasets: [{
                 label: 'Cost',
                 backgroundColor: 'blue',
-                data: data.data
+                data: data.data, 
+                order: 2,
+                yAxisID: 'B',
+              }, {
+                label: 'Mileage', 
+                type: 'line', 
+                data: [10,10,10,10,20,20,20,20,30,30,30,50],
+                borderColor: 'red',
+                order: 1,
+                yAxisID: 'A',
               }]          
             },
             options: {
@@ -109,7 +117,23 @@
               },
               title: {
                 display: true,
-                text: 'Spending in the Last Year'
+                text: 'Mileage and Spending in the Last Year'
+              },
+              scales: {
+                yAxes: [{
+                  id: 'A',
+                  type: 'linear',
+                  position: 'left',
+                }, {
+                  id: 'B',
+                  type: 'linear',
+                  position: 'right',
+                  ticks:{
+                    callback: function(value, index, values){
+                      return '$' + value;
+                    }
+                  }
+                }]
               }
             }
           });
