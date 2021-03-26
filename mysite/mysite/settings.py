@@ -151,3 +151,4 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 CELERY_BROKER_URL = 'amqp://localhost'
+CELERY_TIMEZONE = 'America/New_York'

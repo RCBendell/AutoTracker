@@ -36,7 +36,9 @@ from django.db.models import Sum, Min, Max
 # Index View
 def index(request):
    context = {}
-   check_reminders.delay()
+   #check_reminders.delay()
+   #say_hello.delay()
+   check_reminders.apply_async(countdown=10)
    return render(request, 'index.html', context = context)
 
 from django.views.generic import View
