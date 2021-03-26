@@ -6,6 +6,7 @@ from django.template.loader import render_to_string
 from django.core.mail import send_mail
 #from django.contrib.auth.models import User
 import datetime
+from django.contrib.sites.shortcuts import get_current_site
 
 @shared_task()
 def say_hello():
@@ -17,9 +18,18 @@ def add(x, y):
 
 @shared_task()
 def send_reminder_email(r):
-    subject = 'Test send_reminder_email'
-    #message = render_to_string('reminder_email.html')
-    message = r.msg
+    # Only works when hosting Locally
+    domain = '127.0.0.1:8000/' 
+    subject = 'AutoTracker Reminder!'
+    message = render_to_string('reminder_email.html', 
+    {
+        'txt': r.msg,
+        'date': r.remind_on_date,
+        'carInstance': r.car,
+        'identification': r.id,
+        'domain': domain,
+        # 'new_date': r.remind_on_date + 1 day
+    })
     send_mail(subject, 
                 message, 
                 'bendell.test01@gmail.com', 
