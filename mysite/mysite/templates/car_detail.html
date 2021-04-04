@@ -22,7 +22,7 @@
       <br>
       <br>
 
-      <table>
+      <table class="alpha">
         <tr>
           <th style="width:200px">Inspected:</th>
           <th style="width:200px">Registered:</th>
@@ -46,8 +46,8 @@
       <br>
       <br>
       
-  <button><a href="{{ car.get_absolute_url }}/update">Update Vehicle</a></button>
-  <button><a href="{{ car.get_absolute_url }}/delete">Delete Vehicle</a></button>
+  <a href="{{ car.get_absolute_url }}/update" class="btn btn-primary">Update Vehicle</a>
+  <a href="{{ car.get_absolute_url }}/delete" class="btn btn-primary">Delete Vehicle</a>
   <br>
   <br>
   <hr>
@@ -74,7 +74,7 @@
   </ul>
   {% else %}
     <p>You Have No Log Entries</p>
-    <button><a href="{% url 'createEntry' %}">Create a New Log Entry?</a></button>
+    <a href="{% url 'createEntry' %}" class="btn btn-primary">Create a New Log Entry?</a>
   {% endif %}
   
 

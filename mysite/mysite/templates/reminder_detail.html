@@ -1,7 +1,16 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-    This is Reminder Detail Page, It is not Pretty
+    <h3>Reminder for</h3> <h1>{{ reminder.car }}</h1>
+
+    Current date set for reminder notification: {{ reminder.remind_on_date }}
+    <hr style="width: 50%"> 
+    <h3>Your Message to Yourself:</h3>
+
+    {{ reminder.msg }}
+    <br>
+    <hr>
+
 
     <button><a href="{{ reminder.get_absolute_url }}/update">Update Reminder</a></button>
     <button><a href="{{ reminder.get_absolute_url }}/delete">Delete Reminder</a></button>

@@ -36,14 +36,49 @@ body {
     border-radius: 5%;
   }
 
-  table, th, td {
+  .alpha table,.alpha th,.alpha td {
     border: 2px solid #ff0000;
     border-collapse: collapse;
   }
 
-  th, td{
+  .alpha th, .alpha td{
     padding: 15px;
     text-align: center;
   }
 
+  table.beta{
+    border: none;
+    width: 100%;
+    color: #ff0000;
+    font-weight: bold;
+  }
+
+  .beta td{
+    padding: 15px;
+    text-align: center;
+  }
+
+  table.charlie{
+    border:none;
+    width: 100%;
+  }
+
+  .charlie th{
+    font-weight: bold;
+    text-align: left;
+    background-color: #ff3D3D;
+  }
+
+  .charlie tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+
+  .charlie tr:hover {
+    background-color: #36a327;
+  }
+
+  h6{
+    text-decoration: underline;
+    text-align: center;
+  }
   

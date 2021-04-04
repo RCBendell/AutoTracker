@@ -18,26 +18,36 @@ def add(x, y):
 
 @shared_task()
 def send_reminder_email(r):
-    # Only works when hosting Locally
-    domain = '127.0.0.1:8000/' 
-    subject = 'AutoTracker Reminder!'
-    message = render_to_string('reminder_email.html', 
-    {
-        'txt': r.msg,
-        'date': r.remind_on_date,
-        'carInstance': r.car,
-        'identification': r.id,
-        'domain': domain,
-        # 'new_date': r.remind_on_date + 1 day
-    })
-    send_mail(subject, 
-                message, 
-                'bendell.test01@gmail.com', 
-                [r.email],
-                fail_silently = False, 
-    )
+    try:
+        # Only works when hosting Locally
+        domain = '127.0.0.1:8000/' 
+        subject = 'AutoTracker Reminder!'
+        message = render_to_string('reminder_email.html', 
+        {
+            'txt': r.msg,
+            'date': r.remind_on_date,
+            'carInstance': r.car,
+            'identification': r.id,
+            'domain': domain,
+            # 'new_date': r.remind_on_date + 1 day
+        })
+        send_mail(subject, 
+                    message, 
+                    'bendell.test01@gmail.com', 
+                    [r.email],
+                    fail_silently = False, 
+        )
 
-    print('Email Sent!')
+        print('Email Sent!')
+        
+        r.remind_on_date = datetime.date.today() + datetime.timedelta(days=1)
+        r.save()  
+    # Might not be necessary as I have changed the above date computation to a timedelta rather than a manual +1 day    
+    except ValueError:
+        r.remind_on_date = datetime.date.today()
+        r.remind_on_date = r.remind_on_date.replace(day = 1)
+        r.remind_on_date = r.remind_on_date.replace(month=datetime.date.today().month+1)
+        r.save()
 
 # I need a task that runs on startup, perhaps called from profile view
 

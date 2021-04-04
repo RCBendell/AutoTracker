@@ -5,7 +5,7 @@
 <ul style="list-style-type: none;">
     {% for car in car_list %} {% if car.image %}
     <li>
-        <a href="{{ car.get_absolute_url }}"><img src="{{car.image.url}}" style="width: 500px; height: 500px;" /></a>
+        <a href="{{ car.get_absolute_url }}"><img src="{{car.image.url}}" style="width: 600px; height: 500px;" /></a>
         <br />
         <h4>{{ car.year }}, {{ car.make }}, {{ car.model }}</h4>
         <br />
@@ -21,5 +21,5 @@
 </ul>
 {% else %}
 <p>You Have No Cars in your Garage!</p>
-<button><a href="{% url 'createCar' %}">Would you Like to add a New Car?</a></button>
+<a href="{% url 'createCar' %}" class="btn btn-primary">Would you Like to add a New Car?</a>
 {% endif %} {% endblock %}

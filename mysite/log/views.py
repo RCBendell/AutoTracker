@@ -29,8 +29,9 @@ from .tasks import say_hello, add, send_reminder_email, check_reminders, update_
 import datetime
 
 from django.db.models import Sum, Min, Max
-
-
+from django.contrib.auth.forms import PasswordResetForm
+from django.db.models.query_utils import Q
+from django.contrib.auth.tokens import default_token_generator
 
 
 # Index View
@@ -40,6 +41,9 @@ def index(request):
    #say_hello.delay()
    check_reminders.apply_async(countdown=10)
    return render(request, 'index.html', context = context)
+
+
+
 
 from django.views.generic import View
 from rest_framework.views import APIView 
@@ -57,6 +61,8 @@ def expenditurepercar_chart(request, pk):
    today = datetime.date.today()
    start = datetime.date.today()
    start = start.replace(year=datetime.date.today().year-1)
+   if datetime.date.today().day >= 30:
+      start = start.replace(day=datetime.date.today().day-5)
    start = start.replace(month=datetime.date.today().month+1)
 
    qs = qs.filter(date__range=[start, today])
@@ -148,6 +154,8 @@ def expenditure_chart(request):
    today = datetime.date.today()
    start = datetime.date.today()
    start = start.replace(year=datetime.date.today().year-1)
+   if datetime.date.today().day >= 30:
+      start = start.replace(day=datetime.date.today().day-5)
    start = start.replace(month=datetime.date.today().month+1)
 
    qs = qs.filter(date__range=[start, today])
@@ -325,9 +333,7 @@ def createEntry(request):
       form = LogEntryForm(request.user)
    return render(request, 'entry_creation.html', {'form': form})
 
-class entryList(ListView):
-   model = car
-   template_name = 'entry_list.html'
+
 
 class entryUpdate(UpdateView):
    model = entry
@@ -394,3 +400,157 @@ class reminderDelete(DeleteView):
    model = reminder
    template_name = 'reminder_delete.html'
    success_url = reverse_lazy('profile')
+
+def password_reset_request(request):
+	if request.method == "POST":
+		password_reset_form = PasswordResetForm(request.POST)
+		if password_reset_form.is_valid():
+			data = password_reset_form.cleaned_data['email']
+			associated_users = User.objects.filter(Q(email=data))
+			if associated_users.exists():
+				for user in associated_users:
+					subject = "Password Reset Requested"
+					email_template_name = "registration/password_reset_email.html"
+					c = {
+					"email":user.email,
+					'domain':'127.0.0.1:8000',
+					'site_name': 'Website',
+					"uid": urlsafe_base64_encode(force_bytes(user.pk)),
+					"user": user,
+					'token': default_token_generator.make_token(user),
+					'protocol': 'http',
+					}
+					email = render_to_string(email_template_name, c)
+					try:
+						send_mail(subject, email, 'admin@example.com' , [user.email], fail_silently=False)
+					except BadHeaderError:
+						return HttpResponse('Invalid header found.')
+					return redirect ("/password_reset/done/")
+	password_reset_form = PasswordResetForm()
+	return render(request=request, template_name="registration/password_reset_form.html", context={"password_reset_form":password_reset_form})
+
+
+def diagnosticData(request):
+   context = {}
+   context['user_count'] = User.objects.count()
+   context['entry_count'] = entry.objects.count()
+   context['car_count'] = car.objects.count()
+   context['reminder_count'] = reminder.objects.count()
+   return render(request, 'diagnostic_data.html', context = context)
+
+def new_users_chart(request):
+   qs = User.objects.all()
+   
+   today = datetime.date.today()
+   start = datetime.date.today()
+   start = start.replace(year=datetime.date.today().year-1)
+   if datetime.date.today().day >= 30:
+      start = start.replace(day=datetime.date.today().day-5)
+   start = start.replace(month=datetime.date.today().month+1)
+
+   qs = qs.filter(date_joined__range=[start, today])
+   
+   beginMonth = start.month
+   # begin at start.month and increment 12 times
+   labels = []
+   data = []  
+
+   for i in range (1,13):
+      labels.append(beginMonth)
+      if beginMonth <12:
+         beginMonth +=1
+      else: 
+         beginMonth = 1
+
+   for i in range (1,13):
+      data.append(0)
+
+   for x in qs:
+      y = labels.index(x.date_joined.month)
+      value = data[y]+1
+      data.pop(y)
+      data.insert(y, value)
+
+   labels.clear()
+   beginMonth = start.month
+   for i in range(1,13):
+      datetime_object = datetime.datetime.strptime(str(beginMonth), "%m")
+      month_name = datetime_object.strftime("%B")
+
+      labels.append(month_name)
+      if beginMonth <12:
+         beginMonth +=1
+      else: 
+         beginMonth = 1
+
+   return JsonResponse(data={
+      'labels': labels, 
+      'data': data,
+   })
+
+def new_entries_chart(request):
+   qs = entry.objects.all()
+   
+   today = datetime.date.today()
+   start = datetime.date.today()
+   start = start.replace(year=datetime.date.today().year-1)
+   if datetime.date.today().day >= 30:
+      start = start.replace(day=datetime.date.today().day-5)
+   start = start.replace(month=datetime.date.today().month+1)
+
+   qs = qs.filter(date__range=[start, today])
+   
+   beginMonth = start.month
+   # begin at start.month and increment 12 times
+   labels = []
+   data = []  
+
+   for i in range (1,13):
+      labels.append(beginMonth)
+      if beginMonth <12:
+         beginMonth +=1
+      else: 
+         beginMonth = 1
+
+   for i in range (1,13):
+      data.append(0)
+
+   for x in qs:
+      y = labels.index(x.date.month)
+      value = data[y]+1
+      data.pop(y)
+      data.insert(y, value)
+
+   labels.clear()
+   beginMonth = start.month
+   for i in range(1,13):
+      datetime_object = datetime.datetime.strptime(str(beginMonth), "%m")
+      month_name = datetime_object.strftime("%B")
+
+      labels.append(month_name)
+      if beginMonth <12:
+         beginMonth +=1
+      else: 
+         beginMonth = 1
+
+   return JsonResponse(data={
+      'labels': labels, 
+      'data': data,
+   })
+
+#ADMIN List Views
+class entryList(ListView):
+   model = entry
+   template_name = 'entry_list.html'
+
+class carList(ListView):
+   model = car
+   template_name = 'car_list.html'
+
+class reminderList(ListView):
+   model = reminder
+   template_name = 'reminder_list.html'
+
+class userList(ListView):
+   model = User
+   template_name = 'user_list.html'

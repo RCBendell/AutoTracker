@@ -27,7 +27,7 @@ class car(models.Model):
     is_insured = models.BooleanField(null=True)
     insured_exp = models.DateField(blank=True, null=True)
 
-    # DateField.auto_now_add() = True
+    #date = models.DateField(default=date.today, null=True)
 
     def get_absolute_url(self):
         return reverse('carDetail', args=[str(self.id)])

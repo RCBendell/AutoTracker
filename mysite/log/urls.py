@@ -7,7 +7,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
-
 urlpatterns = [
     # 127.0.0.1:8000/log/
     path('', views.index, name='index'),
@@ -49,6 +48,13 @@ urlpatterns = [
     path('reminder/<int:pk>/update/', views.reminderUpdate.as_view(), name='reminderUpdate'),
     # Reminder Delete
     path('reminder/<int:pk>/delete/', views.reminderDelete.as_view(), name='reminderDelete'),
+    # Administrative Data Page
+    path('diag_data/', views.diagnosticData, name='diag_data'),
+    # Administrative List Pages:
+    path('user_list/', views.userList.as_view(), name='userList'),
+    path('car_list/', views.carList.as_view(), name='carList'),
+    path('entry_list/', views.entryList.as_view(), name='entryList'),
+    path('reminder_list/', views.reminderList.as_view(), name='reminderList'),
 ]
 if settings.DEBUG: 
         urlpatterns += static(settings.MEDIA_URL, 

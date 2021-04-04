@@ -10,9 +10,9 @@
   <P>Email: {{user.email}}</P>
   <br>
   <br>
-  <button><a href="{% url 'createCar' %}">Add a New Car </a></button>
+  <a href="{% url 'createCar' %}" class="btn btn-primary">Add a New Car </a>
   
-  <button><a href="{% url 'myGarage' %}">My Garage</a></button>
+  <a href="{% url 'myGarage' %}" class="btn btn-primary">My Garage</a>
   <br>
   <br>
   <br>
@@ -24,7 +24,7 @@
   <hr>
   <form action="{% url 'searchResults' %}" method="get" style="float:right;">
     <input name="query" type="text" placeholder="Search Entries Here.." >
-    <button type="submit" name="button">Submit</button>
+    <button type="submit" name="button" class="btn btn-primary">Submit</button>
   </form>
   
   
@@ -44,7 +44,7 @@
   </ul>
   {% else %}
     <p>You Have No Log Entries</p>
-    <button><a href="{% url 'createEntry' %}">Create a New Log Entry?</a></button>
+    <a href="{% url 'createEntry' %}" class="btn btn-primary">Create a New Log Entry?</a>
   {% endif %}
 
   
