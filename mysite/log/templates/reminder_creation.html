@@ -1,12 +1,46 @@
 {% extends 'base_generic.html' %}
 {% load crispy_forms_tags %}
 
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 {% block content %}
   <h2>Create Reminder</h2>
+
+  <button type="button" class="collapsible">What is a Reminder?</button>
+  <div class="content">
+    <p>Reminders can be used to remind you of just about anything!
+      Create one to remind you of when you should get an Oil Change, when your Inspection is due, or when a Warranty is going to expire!
+      Or use it to remind you of anything, like a birthday or anniversary... I mean why not?
+    </p>
+    <p>Just Associate it with one of your vehicles</p>
+    <p>Write a message that will remind you of what it is you need to remember</p>
+    <p>Set a date to be reminded on, and don't worry about it!</p>
+  </div>
+
+<br>
+
+
   <form method="post">
     {% csrf_token %}
     {{ form|crispy }}
     <button type="submit" class="btn btn-primary">Create</button>
   </form>
+
+  <script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+    
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") {
+          content.style.display = "none";
+        } else {
+          content.style.display = "block";
+        }
+      });
+    }
+  </script>
+    
 {% endblock %}

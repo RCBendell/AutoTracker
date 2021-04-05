@@ -1,11 +1,45 @@
 {% extends 'base_generic.html' %}
 {% load crispy_forms_tags %}
 
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 {% block content %}
-  <h2>Create Entry</h2>
+  <h2>Create Log Entry</h2>
+
+  <button type="button" class="collapsible">What is a Log Entry?</button>
+  <div class="content">
+    <p>Log Entries can be used to track work done to your vehicle, interesting developments, or even just the mileage of your vehicle</p>
+    <p>For example, create one evertime you change the oil, everytime you wash it to record the cost, or occasionally just to track the mileage increase of your vehicle.</p>
+    <br>
+    <p>Associate the Entry with one of your vehicles.</p>
+    <p>Write a message that details what you did to your vehicle, or what you had done.</p>
+    <p>If it cost you anything, add the price in the 'Cost' field. </p>
+    <p>Set the date associated with the information in the message.</p>
+    <p>REQUIRED: Use the mileage to update the recorded mileage on your vehicle to track it. </p>
+  </div>
+
+<br>
+
   <form method="post">
     {% csrf_token %}
     {{ form|crispy }}
     <button type="submit" class="btn btn-primary">Create</button>
   </form>
+
+  <script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+    
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") {
+          content.style.display = "none";
+        } else {
+          content.style.display = "block";
+        }
+      });
+    }
+  </script>
 {% endblock %}
