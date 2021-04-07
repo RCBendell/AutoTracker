@@ -37,6 +37,9 @@
           <a>{{ entry.blog }}</a><br>
           <a style="float:right;">$ {{ entry.cost }}</a>
           <a>{{ entry.date }}</a><br>
+          {% if entry.image1 or entry.image2 %}
+          <a href="{{ entry.get_absolute_url }}">View Attached Images</a> <br>
+          {% endif %}
           <a href="{{ entry.get_absolute_url }}/update">Edit Log Entry</a>
           <hr style="width: 50%">          
       </li>

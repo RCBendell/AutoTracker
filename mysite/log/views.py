@@ -338,7 +338,7 @@ def createEntry(request):
 class entryUpdate(UpdateView):
    model = entry
    template_name = 'entry_update.html'
-   fields = ['car', 'blog', 'cost', 'date']
+   fields = ['car', 'blog', 'cost', 'date', 'image1', 'image2']
    sucess_url = reverse_lazy('profile')
 
 class entryDetail(DetailView):

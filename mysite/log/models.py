@@ -46,7 +46,10 @@ class entry(models.Model):
     # Optional ... It might not have cost anything, might just be saying hey
     cost = models.DecimalField(max_digits=9, decimal_places=2, blank=True, default=0.00)
     # File for receipts
-    
+    image1 = models.FileField(blank=True, null=True, upload_to='media/entry_images/')
+    image2 = models.ImageField(blank=True, null=True, upload_to='media/entry_images/')
+
+
     # If you have a warranty, make it true, else it will be assumed there is no warranty for the entry
     # warranty = models.BooleanField(default=False)
     # Images
@@ -69,5 +72,4 @@ class reminder(models.Model):
 
     def get_absolute_url(self):
         return reverse('reminderDetail', args=[str(self.id)])
-
 

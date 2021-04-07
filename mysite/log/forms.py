@@ -45,16 +45,10 @@ class LogEntryForm(forms.ModelForm):
     owner = forms.CharField(max_length=20, widget=forms.HiddenInput(), required=False)
     # This needs to be a drop down with all available users cars
     # car = forms.CharField()
-
-
     blog = forms.CharField(widget=forms.Textarea)
     cost = forms.DecimalField(decimal_places=2, required=False)
-
     date = forms.DateField(help_text="For All Dates: use 'YYYY-MM-DD' Format")
-
     update_mileage = forms.IntegerField(required = True)
-
-    #warranty = forms.BooleanField(default=False)
 
     class Meta:
         model = entry

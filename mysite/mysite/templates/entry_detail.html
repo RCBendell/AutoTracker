@@ -2,13 +2,36 @@
 
 {% block content %}
 
-    <a>{{ entry.car }}</a>
+    <h1>{{ entry.car }}</h1>
     <br>
-    <a>{{ entry.blog }}</a>
+    <a>Your Message: </a>
+    <a> {{ entry.blog }}</a>
     <br>
+    <a>Date of Entry: </a>
     <a>{{ entry.date }}</a>
     <br>
 
-    <button><a href="{{ entry.get_absolute_url }}/update">Edit Log Entry</a></button>
+
+    <table class="beta" >
+        <thead>
+            <tr>
+                <th> First Attached Image</th>
+                <th> Second Attached Image</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {% if entry.image1 %}
+                    <td><img src="{{entry.image1.url}}" style="width: 500px; height: 500px;"></td>
+                {% endif %}
+                {% if entry.image2 %}
+                    <td><img src="{{entry.image2.url}}" style="width: 500px; height: 500px;"></td>
+                {% endif %}
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <a href="{{ entry.get_absolute_url }}/update" class="btn btn-primary" style="float:right;">Edit Log Entry</a>
 
 {% endblock %}
