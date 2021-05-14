@@ -1,0 +1,25 @@
+class CarCreationForm(forms.Form):
+    make = forms.CharField(max_length=30, required = True)
+    model = forms.CharField(max_length=30, required = True)
+    year = forms.IntegerField(min_value = 1900, required = True)
+    color = forms.CharField(max_length = 15, required = False)
+    mileage = forms.IntegerField(min_value=1, required = True)
+    vin = forms.CharField(max_length = 30, required = False)
+
+    class Meta:
+        model = car
+        car.owner = User.username
+        fields = ('make', 'model', 'year', 'color', 'vin', 'mileage',)
+
+
+
+Here is the VIEW
+def createCar(request):
+   if request.method == 'POST':
+      form = CarCreationForm(request.POST)
+      if form.is_valid():
+         form.save()
+         return redirect('profile')
+   else:
+      form = CarCreationForm()
+   return render(request, 'car_creation.html', {'form': form})

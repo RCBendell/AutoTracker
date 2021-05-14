@@ -9,7 +9,7 @@ class carAdmin(admin.ModelAdmin):
 admin.site.register(car, carAdmin)
 
 class entryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'date', 'modified_date_time', 'owner', 'car', 'cost', 'image1', 'image2')
+    list_display = ('id', 'date', 'modified_date_time', 'owner', 'car', 'cost', 'update_mileage', 'image1', 'image2')
 admin.site.register(entry, entryAdmin)
 
 class reminderAdmin(admin.ModelAdmin):

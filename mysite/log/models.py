@@ -49,16 +49,10 @@ class entry(models.Model):
     image1 = models.FileField(blank=True, null=True, upload_to='media/entry_images/')
     image2 = models.ImageField(blank=True, null=True, upload_to='media/entry_images/')
 
-
-    # If you have a warranty, make it true, else it will be assumed there is no warranty for the entry
-    # warranty = models.BooleanField(default=False)
-    # Images
-
     def get_absolute_url(self):
         return reverse('entryDetail', args=[str(self.id)])
 
 class reminder(models.Model):
-    # type, date, or mileage triggered. 
     # Build date first
     remind_on_date = models.DateField(blank=False)
     # Whos is it, for searching purposes

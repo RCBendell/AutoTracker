@@ -20,14 +20,14 @@
   <br>
 
   <h2>All Your Log Entries:</h2>
-  <br>
-  <hr>
+  
   <form action="{% url 'searchResults' %}" method="get" style="float:right;">
     <input name="query" type="text" placeholder="Search Entries Here.." >
     <button type="submit" name="button" class="btn btn-primary">Submit</button>
   </form>
-  
-  
+  <br>
+  <hr>
+  <br>
 
   {% if entry_list %}
   <ul>
@@ -78,10 +78,21 @@
               responsive: true,
               legend: {
                 position: 'top',
+                
               },
               title: {
                 display: true,
-                text: 'Total Spending in the Last Year'
+                text: 'Total Spending in the Last Year',
+                font: 'bold'
+              },
+              scales: {
+                yAxes: [{
+                  ticks:{
+                    callback: function(value, index, values){
+                      return '$' + value;
+                    }
+                  }
+                }]
               }
             }
           });

@@ -12,6 +12,7 @@
                 <th>Associated User</th>
                 <th>Date</th>
                 <th>Text</th>
+                <th>Link to Entry Detail</th>
                 
             </tr>
         </thead>
@@ -22,7 +23,11 @@
                 <td>{{ x.owner }}</td>
                 <td>{{ x.date }}</td>
                 <td>{{ x.blog }}</td>
-        
+                {% if x.image1 or x.image2 %}
+                    <td><a href="{{ x.get_absolute_url }}">View Attached Images</a></td>
+                {% else %}
+                    <td><a href="{{ x.get_absolute_url }}">View Entry</a></td>
+                {% endif %}
             </tr>
             {% endfor %}
         </tbody>

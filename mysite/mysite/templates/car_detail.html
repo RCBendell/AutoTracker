@@ -117,13 +117,19 @@
               },
               title: {
                 display: true,
-                text: 'Mileage and Spending in the Last Year'
+                text: 'Mileage and Spending in the Last Year', 
+                font: 'bold'
               },
               scales: {
                 yAxes: [{
                   id: 'A',
                   type: 'linear',
                   position: 'left',
+                  ticks:{
+                    callback: function(value, index, values){
+                      return value + ' miles';
+                    }
+                  }
                 }, {
                   id: 'B',
                   type: 'linear',
